@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Malam di Ambang Hasrat</title>
+    <style>
+        :root {
+            --bg-color: #0f0a12;
+            --card-bg: #1a1220;
+            --accent-color: #d84315;
+            --text-color: #e0d8e6;
+            --text-muted: #a093a8;
+            --btn-bg: #2d1b36;
+            --btn-border: #8e24aa;
+            --btn-hover: #4a148c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            border: 1px solid #382247;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 80vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #382247;
+            padding-bottom: 12px;
+        }
+
+        .title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #f48fb1;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .scene-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ce93d8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .story-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            background-color: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            background-color: var(--btn-hover);
+        }
+
+        .ending-box {
+            text-align: center;
+            padding: 16px;
+            background: rgba(142, 36, 170, 0.1);
+            border-radius: 12px;
+            border: 1px solid var(--btn-border);
+        }
+
+        .ending-type {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ff80ab;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title">Malam di Ambang Hasrat</div>
+        <div class="subtitle" id="progress">Cerita Interaktif</div>
+    </div>
+
+    <div class="content" id="game-content">
+        <!-- Konten cerita diisi melalui JavaScript -->
+    </div>
+
+    <div class="options-container" id="options-container">
+        <!-- Pilihan jawaban diisi melalui JavaScript -->
+    </div>
+</div>
+
+<script>
+    let gender = null;
+    let currentScene = 0;
+    let poinRomantis = 0;
+    let poinGairah = 0;
+
+    const gameContent = document.getElementById('game-content');
+    const optionsContainer = document.getElementById('options-container');
+    const progressText = document.getElementById('progress');
+
+    function initGame() {
+        progressText.innerText = "Menu Utama";
+        gameContent.innerHTML = `
+            <div class="story-text" style="text-align: center;">
+                Selamat datang dalam cerita interaktif romantis-sensual. Pilih gender Anda untuk menyesuaikan sudut pandang cerita.
+            </div>
+        `;
+        optionsContainer.innerHTML = `
+            <button class="btn" onclick="selectGender('Pria')">1. Saya Pria (Pasangan Anda Wanita)</button>
+            <button class="btn" onclick="selectGender('Wanita')">2. Saya Wanita (Pasangan Anda Pria)</button>
+        `;
+    }
+
+    function selectGender(selectedGender) {
+        gender = selectedGender;
+        currentScene = 1;
+        renderScene();
+    }
+
+    const scenes = {
+        1: {
+            title: "SCENE 1: GEMERTAK HUJAN DALAM KAMAR",
+            text: () => `Hujan deras mengguyur kaca jendela. Suara gemericik air berpadu dengan heningnya ruang tamu. Kekasihmu duduk bersandar di sofa, menatap ke arah luar dengan tatapan mata lembut yang menyimpan kerinduan mendalam.`,
+            options: [
+                { text: "Dekati dan usap bahunya dengan lembut.", type: "romantis", val: 2 },
+                { text: "Bisikkan sesuatu yang menggoda tepat di telinganya.", type: "gairah", val: 2 }
+            ]
+        },
+        2: {
+            title: "SCENE 2: TATAPAN YANG BERBICARA",
+            text: () => `Lampu ruangan sengaja diredupkan. Hawa dingin dari luar membuat kehangatan tubuh kalian terasa makin nyata. Dia memutar tubuhnya, menatap lurus ke matamu lalu menelusuri garis rahangmu dengan jemarinya.`,
+            options: [
+                { text: "Genggam jemarinya lalu cium telapak tangannya.", type: "romantis", val: 2 },
+                { text: "Tarik pinggangnya mendekat tanpa memutus kontak mata.", type: "gairah", val: 2 }
+            ]
+        },
+        3: {
+            title: "SCENE 3: SENTUHAN PERTAMA",
+            text: () => `Jarak di antara kalian makin mengikis. Setiap embusan napas terasa membakar keheningan. Tangannya merambat naik ke lehermu, meremas pelan rambut belakangmu.`,
+            options: [
+                { text: "Mendaratkan ciuman lembut di dahinya terlebih dahulu.", type: "romantis", val: 2 },
+                { text: "Langsung menyapu bibirnya dengan ciuman yang dalam dan intens.", type: "gairah", val: 2 }
+            ]
+        },
+        4: {
+            title: "SCENE 4: BISIKAN DAN JANJI",
+            text: () => `Dalam pautan yang makin erat, dia melepaskan bibirnya sejenak hanya untuk meraup udara. "Aku menyukai cara dirimu menyentuhku malam ini..." bisiknya serak.`,
+            options: [
+                { text: 'Jawab: "Aku ingin menikmati setiap detik bersamamu."', type: "romantis", val: 2 },
+                { text: 'Jawab: "Malam ini, kamu sepenuhnya milikku."', type: "gairah", val: 2 }
+            ]
+        },
+        5: {
+            title: "SCENE 5: PELEPASAN PENAT",
+            text: () => `Pakaian terasa mulai mengganggu kehangatan kontak kulit yang kalian inginkan. Jemari saling bertaut, perlahan mengurai kain yang menghalangi kebersamaan.`,
+            options: [
+                { text: "Lepaskan pakaiannya secara perlahan sambil memuji keindahannya.", type: "romantis", val: 2 },
+                { text: "Buka dengan terburu-buru dituntun oleh gairah yang meluap.", type: "gairah", val: 2 }
+            ]
+        },
+        6: {
+            title: "SCENE 6: HARMONI DUA TUBUH",
+            text: () => `Kini tak ada lagi jarak. Kulit bersentuhan langsung, menyebarkan gelombang hangat ke seluruh tubuh. Dia menggeliat pelan saat sentuhan jemarimu menelusuri tubuhnya.`,
+            options: [
+                { text: "Berikan pijatan lembut di punggungnya untuk merelaksasi.", type: "romantis", val: 2 },
+                { text: "Berikan kecupan-kecupan basah di sepanjang leher dan dadanya.", type: "gairah", val: 2 }
+            ]
+        },
+        7: {
+            title: "SCENE 7: PUNCAK KEBERSAMAAN",
+            text: () => `Ritme napas kalian sudah menyatu sempurna. Setiap gerak dipandu oleh naluri dan rasa saling membutuhkan. Dia menatap matamu dalam-dalam, mencari kebenaran rasa di balik kabut gairah.`,
+            options: [
+                { text: "Bisikkan kata cinta dengan penuh kehangatan emosional.", type: "romantis", val: 2 },
+                { text: "Bawa pergerakan tubuh ke ritme yang lebih cepat dan intens.", type: "gairah", val: 2 }
+            ]
+        },
+        8: {
+            title: "SCENE 8: GELOMBANG PENYESUAIAN",
+            text: () => `Sensasi panas melingkupi seluruh ruangan. Keringat tipis melapisi kulit, mengkilap di bawah remang lampu. Kalian berada di ambang pelepasan yang paling dinantikan.`,
+            options: [
+                { text: "Tahan sejenak untuk memperpanjang kebersamaan yang manis ini.", type: "romantis", val: 2 },
+                { text: "Biarkan semua pelepasan terjadi begitu saja dalam kepasrahan.", type: "gairah", val: 2 }
+            ]
+        },
+        9: {
+            title: "SCENE 9: PELEPASAN DAN KEHENINGAN",
+            text: () => `Puncak kehangatan menyapu seluruh raga. Napas saling berpacu cepat sebelum perlahan kembali teratur. Dia merebahkan kepala di dadamu, mendengarkan detak jantungmu.`,
+            options: [
+                { text: "Peluk erat tubuhnya dan selimuti kalian berdua.", type: "romantis", val: 2 },
+                { text: "Kecup keningnya berulang kali sambil mengelus rambutnya.", type: "romantis", val: 2 }
+            ]
+        }
+    };
+
+    function handleChoice(type, val) {
+        if (type === 'romantis') poinRomantis += val;
+        if (type === 'gairah') poinGairah += val;
+
+        currentScene++;
+        if (currentScene <= 9) {
+            renderScene();
+        } else {
+            renderEnding();
+        }
+    }
+
+    function renderScene() {
+        const scene = scenes[currentScene];
+        progressText.innerText = `Scene ${currentScene} dari 10`;
+
+        gameContent.innerHTML = `
+            <div class="scene-title">${scene.title}</div>
+            <div class="story-text">${scene.text()}</div>
+        `;
+
+        optionsContainer.innerHTML = '';
+        scene.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = `${idx + 1}. ${opt.text}`;
+            btn.onclick = () => handleChoice(opt.type, opt.val);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function renderEnding() {
+        progressText.innerText = "SCENE 10: EPILOG";
+        let endingTitle = "";
+        let endingText = "";
+
+        if (poinRomantis > poinGairah) {
+            endingTitle = "ENDING 1: IKATAN JIWA YANG ABADI";
+            endingText = "Malam ini bukan sekadar tentang pemenuhan gairah fisik, melainkan penyatuan dua jiwa yang saling mengagumi. Dia tertidur lelap dalam pelukanmu dengan senyum terukir indah di bibirnya. Cinta ini terasa makin kokoh dan tak tergoyahkan.";
+        } else if (poinGairah > poinRomantis) {
+            endingTitle = "ENDING 2: GELORA GAIRAH TANPA BATAS";
+            endingText = "Malam yang membara meninggalkan jejak sensasi yang tak akan pernah dilupakan. Kalian berdua terengah dalam kepuasan mendalam. Gairah yang meledak malam ini membuktikan betapa magnetisnya tarikan di antara kalian.";
+        } else {
+            endingTitle = "ENDING 3: HARMONI SEMPURNA";
+            endingText = "Keseimbangan sempurna antara kehangatan cinta yang tulus dan gairah yang membakar. Kalian berbaring berdampingan, saling menatap dengan kepuasan emosional dan fisik yang utuh.";
+        }
+
+        gameContent.innerHTML = `
+            <div class="scene-title">SCENE 10: HASIL AKHIR CERITA</div>
+            <div class="story-text">Suara hujan di luar mulai mereda menjadi gerimis tipis. Malam makin larut, membawa kedamaian.</div>
+            <div class="ending-box">
+                <div class="ending-type">${endingTitle}</div>
+                <div class="story-text" style="text-align: center; margin-bottom: 0;">${endingText}</div>
+            </div>
+        `;
+
+        optionsContainer.innerHTML = `
+            <button class="btn" style="text-align: center;" onclick="resetGame()">Mainkan Lagi</button>
+        `;
+    }
+
+    function resetGame() {
+        gender = null;
+        currentScene = 0;
+        poinRomantis = 0;
+        poinGairah = 0;
+        initGame();
+    }
+
+    initGame();
+</script>
+</body>
+</html>
